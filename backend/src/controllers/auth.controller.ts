@@ -29,10 +29,13 @@ export const registerUserController = asyncHandler(
       ...req.body,
     });
 
-    await registerUserService(body);
+    const result = await registerUserService(body);
 
     return res.status(HTTPSTATUS.CREATED).json({
       message: "User created successfully",
+      user: {
+        currentWorkspace: result.workspaceId,
+      },
     });
   }
 );

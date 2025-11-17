@@ -33,7 +33,7 @@ export default function CompanyPage() {
       avatar: "🧑‍💻"
     },
     {
-      name: "Arav",
+      name: "Aarav",
       role: "Head of Design",
       description: "Crafting beautiful, intuitive experiences that users love.",
       avatar: "👩‍🎨"

@@ -1,25 +1,26 @@
 import React from "react";
 import Footer from "@/components/footer/footer";
+import Image from "next/image";
 
 export default function CompanyPage() {
   const values = [
     {
-      icon: "⚡",
+      icon: "/speedef-oh.svg",
       title: "Speed & Efficiency",
       description: "We believe in building fast, reliable tools that help teams move quickly without compromising on quality."
     },
     {
-      icon: "🎯",
+      icon: "/focusimp-oh.svg",
       title: "Focus on Impact",
       description: "Every feature we build is designed to solve real problems and create meaningful value for our users."
     },
     {
-      icon: "🤝",
+      icon: "/collabfirst-oh.svg",
       title: "Collaboration First",
       description: "Great products are built by great teams. We prioritize communication, transparency, and mutual support."
     },
     {
-      icon: "🚀",
+      icon: "/innovation.svg",
       title: "Innovation",
       description: "We're constantly pushing boundaries and exploring new ways to improve how teams work together."
     }
@@ -30,25 +31,25 @@ export default function CompanyPage() {
       name: "Arun",
       role: "Founder & CEO",
       description: "Passionate about building tools that empower teams to do their best work.",
-      avatar: "🧑‍💻"
+      avatar: "/arun-oh.svg"
     },
     {
       name: "Aarav",
       role: "Head of Design",
       description: "Crafting beautiful, intuitive experiences that users love.",
-      avatar: "👩‍🎨"
+      avatar: "/aarav-oh.svg"
     },
     {
       name: "Divyansh",
       role: "Lead Engineer",
       description: "Building scalable, robust infrastructure that powers millions of workflows.",
-      avatar: "👨‍🔧"
+      avatar: "/divyansh-oh.svg"
     },
     {
       name: "Anant",
       role: "Product Manager",
       description: "Bridging the gap between user needs and technical possibilities.",
-      avatar: "👩‍💼"
+      avatar: "/anant-oh.svg"
     }
   ];
 
@@ -82,7 +83,15 @@ export default function CompanyPage() {
               </div>
               <div className="relative">
                 <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-lg p-8 border border-gray-800">
-                  <div className="text-4xl mb-4">🎯</div>
+                  <div className="mb-4">
+                    <Image
+                      src="/started-oh.svg"
+                      alt="Why We Started"
+                      width={48}
+                      height={48}
+                      className="w-12 h-12"
+                    />
+                  </div>
                   <h3 className="text-xl font-semibold mb-4 text-white">Why We Started</h3>
                   <p className="text-gray-400">
                     After years of jumping between multiple tools and struggling with complex workflows, 
@@ -104,7 +113,15 @@ export default function CompanyPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {values.map((value, index) => (
                 <div key={index} className="bg-gray-900/50 border border-gray-800 rounded-lg p-6 transition-all duration-300 hover:border-blue-500 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20">
-                  <div className="text-3xl mb-4">{value.icon}</div>
+                  <div className="mb-4">
+                    <Image
+                      src={value.icon}
+                      alt={value.title}
+                      width={48}
+                      height={48}
+                      className="w-12 h-12"
+                    />
+                  </div>
                   <h3 className="text-xl font-semibold mb-3 text-white">{value.title}</h3>
                   <p className="text-gray-400 leading-relaxed">{value.description}</p>
                 </div>
@@ -123,7 +140,15 @@ export default function CompanyPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {team.map((member, index) => (
                 <div key={index} className="text-center bg-gray-900/50 border border-gray-800 rounded-lg p-6 transition-all duration-300 hover:border-blue-500 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20">
-                  <div className="text-6xl mb-4">{member.avatar}</div>
+                  <div className="mb-4 flex justify-center">
+                    <Image
+                      src={member.avatar}
+                      alt={member.name}
+                      width={80}
+                      height={80}
+                      className="w-20 h-20"
+                    />
+                  </div>
                   <h3 className="text-lg font-semibold mb-2 text-white">{member.name}</h3>
                   <p className="text-blue-400 mb-3 font-medium">{member.role}</p>
                   <p className="text-gray-400 text-sm leading-relaxed">{member.description}</p>

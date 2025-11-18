@@ -1,35 +1,36 @@
 import React from "react";
 import Footer from "@/components/footer/footer";
+import Image from "next/image";
 
 export default function FeaturesPage() {
   const features = [
     {
-      icon: "📋",
+      icon: "/taskmanag-erm.svg",
       title: "Task Management",
       description: "Create, organize, and track tasks with ease. Set priorities, deadlines, and collaborate seamlessly."
     },
     {
-      icon: "👥",
+      icon: "/teamcollab-erm.svg",
       title: "Team Collaboration",
       description: "Work together in real-time. Share updates, files, and feedback instantly across your team."
     },
     {
-      icon: "📊",
+      icon: "/projectanaly-erm.svg",
       title: "Project Analytics",
       description: "Gain insights into your project progress with detailed reports and performance metrics."
     },
     {
-      icon: "🔄",
+      icon: "/workflowauto-erm.svg",
       title: "Workflow Automation",
       description: "Streamline repetitive tasks with smart automation. Focus on what matters most."
     },
     {
-      icon: "📱",
+      icon: "/mobilered-erm.svg",
       title: "Mobile Ready",
       description: "Access your projects anywhere, anytime. Full mobile support for on-the-go productivity."
     },
     {
-      icon: "🔒",
+      icon: "/entersec-erm.svg",
       title: "Enterprise Security",
       description: "Bank-level security with encryption, SSO, and compliance standards you can trust."
     }
@@ -51,7 +52,15 @@ export default function FeaturesPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
             {features.map((feature, index) => (
               <div key={index} className="rounded-lg p-8 border border-gray-800 bg-gray-900/50 transition-all duration-300 hover:border-blue-500 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20">
-                <div className="text-4xl mb-6">{feature.icon}</div>
+                <div className="mb-6">
+                  <Image
+                    src={feature.icon}
+                    alt={feature.title}
+                    width={48}
+                    height={48}
+                    className="w-12 h-12"
+                  />
+                </div>
                 <h3 className="text-xl font-semibold mb-4 text-white">{feature.title}</h3>
                 <p className="text-gray-400 leading-relaxed">{feature.description}</p>
               </div>

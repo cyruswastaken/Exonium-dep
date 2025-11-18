@@ -61,6 +61,8 @@ export const updateTaskController = asyncHandler(
       workspaceId,
       projectId,
       taskId,
+      userId,
+      role,
       body
     );
 
@@ -139,7 +141,7 @@ export const deleteTaskController = asyncHandler(
     const { role } = await getMemberRoleInWorkspace(userId, workspaceId);
     roleGuard(role, [Permissions.DELETE_TASK]);
 
-    await deleteTaskService(workspaceId, taskId);
+    await deleteTaskService(workspaceId, taskId, userId, role);
 
     return res.status(HTTPSTATUS.OK).json({
       message: "Task deleted successfully",

@@ -34,8 +34,31 @@ import { editTaskMutationFn } from "@/lib/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
 import { TaskType } from "@/types/api.type";
+import useTaskPermissions from "@/hooks/use-task-permissions";
+import { useAuthContext } from "@/context/auth-provider";
 
 export default function EditTaskForm({ task, onClose }: { task: TaskType; onClose: () => void }) {
+  const { canEditTask } = useTaskPermissions(task);
+  const { user } = useAuthContext();
+
+  // If user cannot edit this task, show unauthorized message
+  if (!canEditTask) {
+    return (
+      <div className="w-full h-auto max-w-full">
+        <div className="h-full">
+          <div className="mb-5 pb-2 border-b">
+            <h1 className="text-xl font-semibold text-center sm:text-left">Edit Task</h1>
+          </div>
+          <div className="text-center py-8">
+            <p className="text-muted-foreground">
+              You don't have permission to edit this task. Only administrators and the assigned user can edit tasks.
+            </p>
+            <Button className="mt-4" onClick={onClose}>Close</Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
   const queryClient = useQueryClient();
   const workspaceId = useWorkspaceId();
 
@@ -86,6 +109,16 @@ export default function EditTaskForm({ task, onClose }: { task: TaskType; onClos
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     if (isPending) return;
+    
+    // Double-check permissions before submitting
+    if (!canEditTask) {
+      toast({
+        title: "Permission Denied",
+        description: `You cannot edit this task. It is assigned to ${task.assignedTo?.name || 'someone else'}.`,
+        variant: "destructive",
+      });
+      return;
+    }
 
     const payload = {
       workspaceId,
@@ -108,9 +141,17 @@ export default function EditTaskForm({ task, onClose }: { task: TaskType; onClos
         onClose();
       },
       onError: (error) => {
+        console.error('Edit task error:', error);
+        let errorMessage = error.message;
+        
+        // Check if it's a permission error
+        if (error.message.includes("You can only edit tasks that are assigned to you")) {
+          errorMessage = `Permission denied: You can only edit tasks assigned to you. This task is assigned to ${task.assignedTo?.name || 'someone else'}.`;
+        }
+        
         toast({
           title: "Error",
-          description: error.message,
+          description: errorMessage,
           variant: "destructive",
         });
       },

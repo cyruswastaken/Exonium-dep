@@ -18,6 +18,7 @@ import useWorkspaceId from "@/hooks/use-workspace-id";
 import { deleteTaskMutationFn } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
 import EditTaskDialog from "../edit-task-dialog"; // Import the Edit Dialog
+import useTaskPermissions from "@/hooks/use-task-permissions";
 
 interface DataTableRowActionsProps {
   row: Row<TaskType>;
@@ -28,6 +29,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const [openEditDialog, setOpenEditDialog] = useState(false); // State for edit dialog
 
   const queryClient = useQueryClient();
+  const { canEditTask, canDeleteTask } = useTaskPermissions(row.original);
   const workspaceId = useWorkspaceId();
 
   const { mutate, isPending } = useMutation({
@@ -54,6 +56,11 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
     );
   };
 
+  // Don't show dropdown if user has no permissions
+  if (!canEditTask && !canDeleteTask) {
+    return null;
+  }
+
   return (
     <>
       <DropdownMenu>
@@ -64,20 +71,26 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[160px]">
-          {/* Edit Task Option */}
-          <DropdownMenuItem className="cursor-pointer" onClick={() => setOpenEditDialog(true)}>
-            <Pencil className="w-4 h-4 mr-2" /> Edit Task
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
+          {/* Edit Task Option - Only show if user can edit this task */}
+          {canEditTask && (
+            <DropdownMenuItem className="cursor-pointer" onClick={() => setOpenEditDialog(true)}>
+              <Pencil className="w-4 h-4 mr-2" /> Edit Task
+            </DropdownMenuItem>
+          )}
+          
+          {/* Show separator only if both options are available */}
+          {canEditTask && canDeleteTask && <DropdownMenuSeparator />}
 
-          {/* Delete Task Option */}
-          <DropdownMenuItem
-            className="!text-destructive cursor-pointer"
-            onClick={() => setOpenDialog(true)}
-          >
-            Delete Task
-            <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
-          </DropdownMenuItem>
+          {/* Delete Task Option - Only show if user can delete this task */}
+          {canDeleteTask && (
+            <DropdownMenuItem
+              className="!text-destructive cursor-pointer"
+              onClick={() => setOpenDialog(true)}
+            >
+              Delete Task
+              <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
 

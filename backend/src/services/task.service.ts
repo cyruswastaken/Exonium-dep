@@ -57,6 +57,8 @@ export const updateTaskService = async (
   workspaceId: string,
   projectId: string,
   taskId: string,
+  userId: string,
+  userRole: string,
   body: {
     title: string;
     description?: string;
@@ -74,12 +76,23 @@ export const updateTaskService = async (
     );
   }
 
-  const task = await TaskModel.findById(taskId);
+  const task = await TaskModel.findById(taskId).populate('assignedTo');
 
   if (!task || task.project.toString() !== projectId.toString()) {
     throw new NotFoundException(
       "Task not found or does not belong to this project"
     );
+  }
+
+  // Check if user can edit this specific task
+  // Admins and Owners can edit all tasks
+  // Members can only edit tasks assigned to them
+  if (userRole === 'MEMBER') {
+    if (!task.assignedTo || task.assignedTo._id.toString() !== userId.toString()) {
+      throw new BadRequestException(
+        "You can only edit tasks that are assigned to you"
+      );
+    }
   }
 
   const updatedTask = await TaskModel.findByIdAndUpdate(
@@ -198,8 +211,31 @@ export const getTaskByIdService = async (
 
 export const deleteTaskService = async (
   workspaceId: string,
-  taskId: string
+  taskId: string,
+  userId: string,
+  userRole: string
 ) => {
+  // First find the task to check permissions
+  const existingTask = await TaskModel.findOne({
+    _id: taskId,
+    workspace: workspaceId,
+  }).populate('assignedTo');
+
+  if (!existingTask) {
+    throw new NotFoundException("Task not found");
+  }
+
+  // Check if user can delete this specific task
+  // Admins and Owners can delete all tasks
+  // Members can only delete tasks assigned to them
+  if (userRole === 'MEMBER') {
+    if (!existingTask.assignedTo || existingTask.assignedTo._id.toString() !== userId.toString()) {
+      throw new BadRequestException(
+        "You can only delete tasks that are assigned to you"
+      );
+    }
+  }
+
   const task = await TaskModel.findOneAndDelete({
     _id: taskId,
     workspace: workspaceId,

@@ -92,7 +92,7 @@ export default function PricingPage() {
                 plan.popular
                   ? "border-white/20 bg-gray-800/50"
                   : "border-gray-800 bg-gray-900/50"
-              } relative`}
+              } relative transition-all duration-300 hover:border-blue-500 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20`}
             >
               <div className="mb-6">
                 <h3 className="text-xl font-semibold mb-2">{plan.name}</h3>

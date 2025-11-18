@@ -103,7 +103,7 @@ export default function CompanyPage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {values.map((value, index) => (
-                <div key={index} className="bg-gray-900/50 border border-gray-800 rounded-lg p-6">
+                <div key={index} className="bg-gray-900/50 border border-gray-800 rounded-lg p-6 transition-all duration-300 hover:border-blue-500 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20">
                   <div className="text-3xl mb-4">{value.icon}</div>
                   <h3 className="text-xl font-semibold mb-3 text-white">{value.title}</h3>
                   <p className="text-gray-400 leading-relaxed">{value.description}</p>
@@ -122,7 +122,7 @@ export default function CompanyPage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {team.map((member, index) => (
-                <div key={index} className="text-center">
+                <div key={index} className="text-center bg-gray-900/50 border border-gray-800 rounded-lg p-6 transition-all duration-300 hover:border-blue-500 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20">
                   <div className="text-6xl mb-4">{member.avatar}</div>
                   <h3 className="text-lg font-semibold mb-2 text-white">{member.name}</h3>
                   <p className="text-blue-400 mb-3 font-medium">{member.role}</p>

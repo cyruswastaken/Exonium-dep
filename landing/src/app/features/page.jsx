@@ -50,7 +50,7 @@ export default function FeaturesPage() {
           {/* Features Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
             {features.map((feature, index) => (
-              <div key={index} className="rounded-lg p-8 border border-gray-800 bg-gray-900/50">
+              <div key={index} className="rounded-lg p-8 border border-gray-800 bg-gray-900/50 transition-all duration-300 hover:border-blue-500 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20">
                 <div className="text-4xl mb-6">{feature.icon}</div>
                 <h3 className="text-xl font-semibold mb-4 text-white">{feature.title}</h3>
                 <p className="text-gray-400 leading-relaxed">{feature.description}</p>

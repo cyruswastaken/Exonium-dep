@@ -73,7 +73,7 @@ const InviteUser = () => {
                 Hey there! You're invited to join an Exonium Workspace!
               </CardTitle>
               <CardDescription>
-                Looks like you need to be logged into your TeamSync account to
+                Looks like you need to be logged into your Exonium account to
                 join this Workspace.
               </CardDescription>
             </CardHeader>

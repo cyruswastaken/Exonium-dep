@@ -12,9 +12,12 @@ import { TaskType } from "@/types/api.type";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { Loader } from "lucide-react";
+import useTaskDetailsDialog from "@/hooks/use-task-details-dialog";
+import TaskDetailsDialog from "./task-details-dialog";
 
 const RecentTasks = () => {
   const workspaceId = useWorkspaceId();
+  const { onOpen } = useTaskDetailsDialog();
 
   const { data, isLoading } = useQuery({
     queryKey: ["all-tasks", workspaceId],
@@ -30,6 +33,7 @@ const RecentTasks = () => {
 
   return (
     <div className="flex flex-col space-y-6">
+      <TaskDetailsDialog />
       {isLoading ? (
         <Loader
           className="w-8 h-8 
@@ -57,7 +61,8 @@ const RecentTasks = () => {
           return (
             <li
               key={task._id}
-              className="p-4 flex items-center justify-between hover:bg-accent/20 dark:hover:bg-accent/10 transition-colors duration-300"
+              className="p-4 flex items-center justify-between hover:bg-accent/20 dark:hover:bg-accent/10 transition-colors duration-300 cursor-pointer"
+              onClick={() => onOpen(task)}
             >
               {/* Task Info */}
               <div className="flex flex-col space-y-1 flex-grow">

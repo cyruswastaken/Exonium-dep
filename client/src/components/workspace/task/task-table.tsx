@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import { getColumns } from "./table/columns";
 import { DataTable } from "./table/table";
 import { useParams } from "react-router-dom";
@@ -16,6 +16,8 @@ import useGetProjectsInWorkspaceQuery from "@/hooks/api/use-get-projects";
 import useGetWorkspaceMembers from "@/hooks/api/use-get-workspace-members";
 import { getAvatarColor, getAvatarFallbackText } from "@/lib/helper";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import TaskDetailsDialog from "./task-details-dialog";
+import useTaskDetailsDialog from "@/hooks/use-task-details-dialog";
 
 type Filters = ReturnType<typeof useTaskTableFilter>[0];
 type SetFilters = ReturnType<typeof useTaskTableFilter>[1];
@@ -37,6 +39,19 @@ const TaskTable = () => {
   const [filters, setFilters] = useTaskTableFilter();
   const workspaceId = useWorkspaceId();
   const columns = getColumns(projectId);
+  const { onOpen } = useTaskDetailsDialog();
+
+  useEffect(() => {
+    const handleTaskRowClick = (event: Event) => {
+      const customEvent = event as CustomEvent<TaskType>;
+      onOpen(customEvent.detail);
+    };
+
+    window.addEventListener('taskRowClick', handleTaskRowClick);
+    return () => {
+      window.removeEventListener('taskRowClick', handleTaskRowClick);
+    };
+  }, [onOpen]);
 
   const { data, isLoading } = useQuery({
     queryKey: [
@@ -75,6 +90,7 @@ const TaskTable = () => {
 
   return (
     <div className="w-full relative">
+      <TaskDetailsDialog />
       <DataTable
         isLoading={isLoading}
         data={tasks}

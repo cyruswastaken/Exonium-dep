@@ -53,7 +53,15 @@ export const getColumns = (projectId?: string): ColumnDef<TaskType>[] => {
       ),
       cell: ({ row }) => {
         return (
-          <div className="flex flex-wrap space-x-2">
+          <div 
+            className="flex flex-wrap space-x-2 cursor-pointer hover:opacity-80 transition-opacity"
+            onClick={() => {
+              const event = new CustomEvent('taskRowClick', { 
+                detail: row.original 
+              });
+              window.dispatchEvent(event);
+            }}
+          >
             <Badge variant="outline" className="capitalize shrink-0 h-[25px]">
               {row.original.taskCode}
             </Badge>

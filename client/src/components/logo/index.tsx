@@ -11,7 +11,7 @@ const Logo = (props: { url?: string }) => {
       {isExternal ? (
         <a href={url} className="hover:opacity-80 transition-opacity">
           <img 
-            src="/logo-assets/logo-dark.png" 
+            src="/logo-assets/logo-light.png" 
             alt="Exonium Logo" 
             className="w-6 h-6 rounded-md"
           />

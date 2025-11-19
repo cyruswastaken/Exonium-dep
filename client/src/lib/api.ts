@@ -261,3 +261,47 @@ export const deleteTaskMutationFn = async ({
   );
   return response.data;
 };
+
+//********* COMMENTS ****************
+
+export const getCommentsQueryFn = async ({
+  workspaceId,
+  taskId,
+}: {
+  workspaceId: string;
+  taskId: string;
+}) => {
+  const response = await API.get(
+    `/comment/${workspaceId}/tasks/${taskId}/comments`
+  );
+  return response.data;
+};
+
+export const createCommentMutationFn = async ({
+  workspaceId,
+  taskId,
+  content,
+}: {
+  workspaceId: string;
+  taskId: string;
+  content: string;
+}) => {
+  const response = await API.post(
+    `/comment/${workspaceId}/tasks/${taskId}/comments`,
+    { content }
+  );
+  return response.data;
+};
+
+export const deleteCommentMutationFn = async ({
+  workspaceId,
+  commentId,
+}: {
+  workspaceId: string;
+  commentId: string;
+}) => {
+  const response = await API.delete(
+    `/comment/${workspaceId}/comments/${commentId}`
+  );
+  return response.data;
+};
